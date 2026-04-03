@@ -7,14 +7,14 @@
 
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:registration_lab/main.dart';
+import '../lib/main.dart';
 
 void main() {
-  testWidgets('App loads registration form', (WidgetTester tester) async {
+  testWidgets('App loads home screen', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const RegistrationApp());
+    await tester.pumpWidget(const MyApp());
 
-    // Verify that the form shows the name field.
-    expect(find.text('Full Name'), findsOneWidget);
+    // Verify that the home screen shows the button.
+    expect(find.text('Go to product id 42'), findsOneWidget);
   });
 }

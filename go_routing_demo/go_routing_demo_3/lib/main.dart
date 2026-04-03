@@ -26,8 +26,8 @@ final _router = GoRouter(
       builder: (context, state) => const HomeScreen(),
     ),
     GoRoute(
-  name: 'product',
-  path: '/product/:id',,
+      name: 'product',
+      path: '/product/:id',
       builder: (context, state) {
         final id = state.pathParameters['id']!;
         final filter = state.uri.queryParameters['filter'] ?? 'all';
@@ -65,10 +65,10 @@ class HomeScreen extends StatelessWidget {
       body: Center(
         child: ElevatedButton(
           onPressed: () => context.goNamed(
-  'product',
-  pathParameters: {'id': '42'},
-  queryParameters: {'filter': 'popular'},
-),
+            'product',
+            pathParameters: {'id': '42'},
+            queryParameters: {'filter': 'popular'},
+          ),
           child: const Text('Go to product id 42'),
         ),
       ),

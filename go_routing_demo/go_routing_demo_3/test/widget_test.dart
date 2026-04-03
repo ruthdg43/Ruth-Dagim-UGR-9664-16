@@ -7,7 +7,7 @@
 
 import 'package:flutter_test/flutter_test.dart';
 
-import '../lib/main.dart';
+import 'package:go_routing_demo/main.dart';
 
 void main() {
   testWidgets('App loads home screen', (WidgetTester tester) async {

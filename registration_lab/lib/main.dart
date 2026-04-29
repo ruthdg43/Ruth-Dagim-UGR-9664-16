@@ -9,7 +9,10 @@ class RegistrationApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Registration Form',
-      theme: ThemeData(primarySwatch: Colors.deepPurple),
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
       home: const RegistrationScreen(),
     );
   }
@@ -39,11 +42,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   void _submitForm() {
-
     if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Registration successful! ${_nameController.text}')));
+      // FIX: Removed 'const' here
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Registration successful! ${_nameController.text}')),
+      );
     }
   }
 
@@ -55,81 +58,85 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                
-                controller: _nameController,
-                decoration: const InputDecoration(
-                  labelText: 'Full Name',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.person),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                TextFormField(
+                  controller: _nameController,
+                  decoration: const InputDecoration(
+                    labelText: 'Full Name',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.person),
+                  ),
+                  validator: (value) {
+                    // FIX: Added || 
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your name';
+                    }
+                    return null;
+                  },
                 ),
-                validator: (value) {
-                  if (value == null  value.isEmpty) {
-                    return 'Please enter your name';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: _emailController,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.email),
+                const SizedBox(height: 12),
+                TextFormField(
+                  controller: _emailController,
+                  decoration: const InputDecoration(
+                    labelText: 'Email',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.email),
+                  ),
+                  validator: (value) {
+                    // FIX: Added ||
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter an email';
+                    }
+                    if (!value.contains('@')) {
+                      return 'Please enter a valid email';
+                    }
+                    return null;
+                  },
                 ),
-                validator: (value) {
-                  if (value == null  value.isEmpty) {
-                    return 'Please enter an email';
-                  }
-                  if (!value.contains('@')) {
-                    return 'Please enter a valid email';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: _passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.lock),
+                const SizedBox(height: 12),
+                TextFormField(
+                  controller: _passwordController,
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                    labelText: 'Password',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.lock),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a password';
+                    }
+                    if (value.length < 6) {
+                      return 'Password must be at least 6 characters';
+                    }
+                    return null;
+                  },
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a password';
-                  }
-                  if (value.length < 6) {
-                    return 'Password must be at least 6 characters';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: _confirmPasswordController,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: 'Confirm Password',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.lock_outline),
+                const SizedBox(height: 12),
+                TextFormField(
+                  controller: _confirmPasswordController,
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                    labelText: 'Confirm Password',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.lock_outline),
+                  ),
+                  validator: (value) {
+                    if (value != _passwordController.text) {
+                      return 'Passwords do not match';
+                    }
+                    return null;
+                  },
                 ),
-                validator: (value) {
-                  if (value != _passwordController.text) {
-                    return 'Passwords do not match';}
-                  return null;
-                },
-              ),
-              const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: _submitForm,
-                child: const Text('Register'),
-              ),
-            ],
+                const SizedBox(height: 24),
+                ElevatedButton(
+                  onPressed: _submitForm,
+                  child: const Text('Register'),
+                ),
+              ],
+            ),
           ),
         ),
       ),

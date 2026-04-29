@@ -24,7 +24,6 @@ class RegistrationScreen extends StatefulWidget {
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
   final _formKey = GlobalKey<FormState>();
-
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -40,20 +39,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   void _submitForm() {
+
     if (_formKey.currentState!.validate()) {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Registration Successful'),
-          content: Text('Welcome, ${_nameController.text}!'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('OK'),
-            ),
-          ],
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Registration successful! ${_nameController.text}')));
     }
   }
 
@@ -68,6 +58,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           child: Column(
             children: [
               TextFormField(
+                
                 controller: _nameController,
                 decoration: const InputDecoration(
                   labelText: 'Full Name',
@@ -75,15 +66,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   prefixIcon: Icon(Icons.person),
                 ),
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
+                  if (value == null  value.isEmpty) {
                     return 'Please enter your name';
                   }
                   return null;
                 },
               ),
-
               const SizedBox(height: 12),
-
               TextFormField(
                 controller: _emailController,
                 decoration: const InputDecoration(
@@ -92,7 +81,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   prefixIcon: Icon(Icons.email),
                 ),
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
+                  if (value == null  value.isEmpty) {
                     return 'Please enter an email';
                   }
                   if (!value.contains('@')) {
@@ -101,9 +90,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   return null;
                 },
               ),
-
               const SizedBox(height: 12),
-
               TextFormField(
                 controller: _passwordController,
                 obscureText: true,
@@ -122,9 +109,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   return null;
                 },
               ),
-
               const SizedBox(height: 12),
-
               TextFormField(
                 controller: _confirmPasswordController,
                 obscureText: true,
@@ -135,14 +120,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 ),
                 validator: (value) {
                   if (value != _passwordController.text) {
-                    return 'Passwords do not match';
-                  }
+                    return 'Passwords do not match';}
                   return null;
                 },
               ),
-
               const SizedBox(height: 24),
-
               ElevatedButton(
                 onPressed: _submitForm,
                 child: const Text('Register'),
